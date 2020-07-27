@@ -2,6 +2,7 @@ import assetManager from "./assetManager";
 import Confetti from "../utils/confetti";
 import Ui from "./ui";
 import Globals from "./globals";
+import {Body, Sphere, Box, Vec3} from "cannon";
 
 //import AnimateTest from './animateTest';
 
@@ -10,6 +11,9 @@ var main, clock, controls, ui;
 var isTest = true;
 var data, confettiMaker;
 var updateFunction;
+let cam;
+let sausage;
+let sausages = [];
 
 class Game {
   constructor(_main) {}
@@ -51,20 +55,62 @@ class Game {
     this.initLights();
     this.initControls();
 
-    let cam = main.camera;
-    cam.position.set(0, 20, 20);
+    cam = main.camera;
+    cam.position.set(0, 3000, 2000);
     cam.lookAt(0, 0, 0);
 
     main.initCannonDebug();
     main.world.allowSleep = true;
 
     // /// /// /// /// /// /// /// ///     C O D E     B E L O W     \\\ \\\ \\\ \\\ \\\ \\\ \\\ \\\ \\
+    // Add platform
 
-    let sausage = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
-    main.scene.add(sausage);
-    let sausage2 = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
-    main.scene.add(sausage2);
-    // THREE.SkeletonUtils.clone(main.assets.sausage.scene);
+    let pathGeo = new THREE.BoxGeometry(2000, 200, 2000);
+    let pathMat = new THREE.MeshPhongMaterial({
+      color: 0x787878,
+    });
+    this.path = new THREE.Mesh(pathGeo, pathMat);
+
+    this.path.position.set(0, 0, 0);
+    main.scene.add(this.path);
+
+    this.path.body = new Body({
+      position: this.path.position,
+      mass: 0,
+    });
+    let pathShape = new Box(new Vec3(1000, 100, 1000)); //cannonjs
+    this.path.body.addShape(pathShape);
+    main.world.add(this.path.body);
+
+    // Add sausages
+
+    let number = 5;
+    let angle;
+    let radius = 600;
+
+    // let player = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
+    // main.scene.add(player);
+    // player.position.set(0, 0, 0);
+
+    for (let i = 0; i < number; i++) {
+      sausage = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
+      main.scene.add(sausage);
+
+      angle = (i / (number * 0.5)) * Math.PI;
+      sausage.position.set(0 + radius * Math.sin(angle), 300, 0 - radius * Math.cos(angle));
+      sausage.rotation.y = -(i * Math.PI) / 2.5;
+
+      sausage.body = new Body({
+        position: sausage.position,
+        mass: 100,
+      });
+      let shape = new Sphere(1);
+      sausage.body.addShape(shape);
+      main.world.add(sausage.body);
+      sausages.push(sausage);
+    }
+
+    console.log(sausages[0]);
 
     if (fromRestart) {
       return;
@@ -125,12 +171,24 @@ class Game {
     if (delta > 0.03) delta = 0.03;
     var ratio = delta * 60;
 
+    let controls = app.controls;
+
+    if (controls.isDown) {
+      let dx = controls.mouseX - controls.prevX;
+      sausages[0].body.position.x += dx;
+      //sausages[0].tx += dx;
+      console.log("mert");
+    }
+
+    for (let ssg of sausages) ssg.position.copy(ssg.body.position);
+
     confettiMaker && confettiMaker.update();
 
     main.CANNON && main.CANNON.cannonDebugRenderer && main.CANNON.cannonDebugRenderer.update();
     main.world && main.world.step(delta);
 
     //main.renderer.render(main.scene, main.camera);
+    //console.log(cam.position);
 
     app.threeRenderOnUpdate && main.renderer.render(main.scene, main.camera);
   }
