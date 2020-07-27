@@ -1,0 +1,8 @@
+/*
+
+import assets
+create ring
+position models
+
+
+*/
