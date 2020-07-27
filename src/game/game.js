@@ -63,6 +63,7 @@ class Game {
     main.world.allowSleep = true;
 
     // /// /// /// /// /// /// /// ///     C O D E     B E L O W     \\\ \\\ \\\ \\\ \\\ \\\ \\\ \\\ \\
+
     // Add platform
 
     let pathGeo = new THREE.BoxGeometry(2000, 200, 2000);
@@ -88,16 +89,12 @@ class Game {
     let angle;
     let radius = 600;
 
-    // let player = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
-    // main.scene.add(player);
-    // player.position.set(0, 0, 0);
-
     for (let i = 0; i < number; i++) {
       sausage = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
       main.scene.add(sausage);
 
       angle = (i / (number * 0.5)) * Math.PI;
-      sausage.position.set(0 + radius * Math.sin(angle), 300, 0 - radius * Math.cos(angle));
+      sausage.position.set(0 + radius * Math.sin(angle), 100, 0 - radius * Math.cos(angle));
       sausage.rotation.y = -(i * Math.PI) / 2.5;
 
       sausage.body = new Body({
