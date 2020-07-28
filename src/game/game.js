@@ -57,7 +57,7 @@ class Game {
     this.initControls();
 
     cam = main.camera;
-    cam.position.set(0, 3000, 2000);
+    cam.position.set(0, 30, 20);
     cam.lookAt(0, 0, 0);
 
     main.initCannonDebug();
@@ -67,7 +67,7 @@ class Game {
 
     // Add platform
 
-    let pathGeo = new THREE.BoxGeometry(2000, 200, 2000);
+    let pathGeo = new THREE.BoxGeometry(1, 1, 1);
     let pathMat = new THREE.MeshPhongMaterial({
       color: 0x787878,
     });
@@ -80,48 +80,26 @@ class Game {
       position: this.path.position,
       mass: 0,
     });
-    let pathShape = new Box(new Vec3(1000, 100, 1000)); //cannonjs
+    let pathShape = new Box(new Vec3(10, 1, 10)); //cannonjs
     this.path.body.addShape(pathShape);
     main.world.add(this.path.body);
 
     // Add sausages
 
-    // let sampleSausage = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
-    // //main.scene.add(sampleSausage);
-
-    // let ssgVec = new Vector3();
-    // let ssg3 = new Box3().setFromObject(sampleSausage);
-    // let ssgSize = ssg3.getSize(ssgVec);
-    // console.log(ssgSize);
-
     let number = 5;
-    let radius = 500;
+    let radius = 5;
+    let sausages = [];
 
     for (let i = 0; i < number; i++) {
       let angle = (i / (number * 0.5)) * Math.PI;
-
-      let pos = new Vector3(0 + radius * Math.sin(angle), 0, 0 - radius * Math.cos(angle));
-
       let rot = new Euler(0, -(i * Math.PI) / 2.5, 0);
-
+      let pos = new Vector3(0 + radius * Math.sin(angle), 0, 0 - radius * Math.cos(angle));
+      //pos.applyEuler(rot);
       let sausage = new Sausage(pos, rot);
-      /*       sausage = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
-      main.scene.add(sausage);
 
-      angle = (i / (number * 0.5)) * Math.PI;
-      sausage.position.set(0 + radius * Math.sin(angle), 500, 0 - radius * Math.cos(angle));
-      sausage.rotation.y = -(i * Math.PI) / 2.5;
-
-      sausage.body = new Body({
-        position: sausage.position,
-        mass: 10,
-      });
-
-      let shape = new Box(new Vec3(ssgSize.x / 2, ssgSize.y / 2, ssgSize.z / 2));
-      sausage.body.addShape(shape);
-      main.world.add(sausage.body);
-      sausages.push(sausage); */
+      sausages.push(sausage);
     }
+    console.log(sausages);
 
     if (fromRestart) {
       return;

@@ -4,14 +4,15 @@ import Globals from "./globals";
 import {Body, Box, Vec3} from "cannon";
 
 export default class Sausage extends Object3D {
-  constructor(pos, rot = new Euler()) {
+  constructor(pos = new Vector3(), rot = new Euler()) {
     super();
 
     // Add sausage mesh
 
     this.mesh = THREE.SkeletonUtils.clone(Globals.main.assets.sausage.scene);
     this.add(this.mesh);
-    this.mesh.position.y = -100;
+    this.mesh.scale.multiplyScalar(0.01);
+    this.mesh.position.y = -1;
 
     Globals.main.scene.add(this);
 
@@ -23,11 +24,8 @@ export default class Sausage extends Object3D {
     let ssg3 = new Box3().setFromObject(this);
     let ssgSize = ssg3.getSize(new Vector3());
 
-    /*     let box3helper = new Box3Helper(ssg3, "#ff0000");
-    Globals.main.scene.add(box3helper); */
-
     this.body = new Body({
-      position: this.position,
+      //position: this.position,
       mass: 10,
     });
 
@@ -35,8 +33,11 @@ export default class Sausage extends Object3D {
     this.body.addShape(shape);
     Globals.main.world.add(this.body);
 
-    this.body.position.y += ssgSize.y * 1.2;
     this.updateWorldMatrix(true);
+
+    this.body.position.copy(this.position);
+    this.body.position.y += ssgSize.y * 1.2;
+    this.body.quaternion.copy(this.quaternion);
   }
 
   update(delta) {
