@@ -1,8 +1,9 @@
 /*
 
-import assets
-create ring
-position models
+
+// accelaration after collision
+// player controls
+
 
 
 */
