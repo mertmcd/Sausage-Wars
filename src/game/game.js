@@ -5,6 +5,7 @@ import Globals from "./globals";
 import {Body, Sphere, Box, Vec3} from "cannon";
 import {Vector3, Box3, Triangle, Euler} from "three";
 import Sausage from "./sausage";
+import PlayerController from "./playercontroller";
 
 //import AnimateTest from './animateTest';
 
@@ -63,11 +64,11 @@ class Game {
     main.initCannonDebug();
     main.world.allowSleep = true;
 
-    // /// /// /// /// /// /// /// ///     C O D E     B E L O W     \\\ \\\ \\\ \\\ \\\ \\\ \\\ \\\ \\
+    // /// /// /// /// ///     C O D E     B E L O W     \\\ \\\ \\\ \\\ \\\ \\
 
     // Add platform
 
-    let pathGeo = new THREE.BoxGeometry(1, 1, 1);
+    let pathGeo = new THREE.BoxGeometry(20, 2, 20);
     let pathMat = new THREE.MeshPhongMaterial({
       color: 0x787878,
     });
@@ -76,36 +77,39 @@ class Game {
     this.path.position.set(0, 0, 0);
     main.scene.add(this.path);
 
-    this.path.body = new Body({
-      position: this.path.position,
-      mass: 0,
-    });
-    let pathShape = new Box(new Vec3(10, 1, 10)); //cannonjs
-    this.path.body.addShape(pathShape);
-    main.world.add(this.path.body);
+    // this.path.body = new Body({
+    //   position: this.path.position,
+    //   mass: 0,
+    // });
+    // let pathShape = new Box(new Vec3(10, 1, 10));
+    // this.path.body.addShape(pathShape);
+    // main.world.add(this.path.body);
 
     // Add sausages
 
     let number = 5;
-    let radius = 5;
-    let sausages = [];
+    let radius = 7;
+    Globals.sausages = [];
 
     for (let i = 0; i < number; i++) {
       let angle = (i / (number * 0.5)) * Math.PI;
       let rot = new Euler(0, -(i * Math.PI) / 2.5, 0);
       let pos = new Vector3(0 + radius * Math.sin(angle), 0, 0 - radius * Math.cos(angle));
-      //pos.applyEuler(rot);
       let sausage = new Sausage(pos, rot);
-
-      sausages.push(sausage);
+      if (i != 0) Globals.sausages.push(sausage);
+      else Globals.player = sausage;
     }
-    console.log(sausages);
+    //Globals.player.isAi = false;
+    Globals.player.tx = 0;
+    Globals.player.ty = 0;
+    Globals.player.makePlayer();
 
     if (fromRestart) {
       return;
     }
 
-    ////call these functions once
+    // call these functions once
+
     updateFunction = this.update.bind(this);
     this.initUi();
     this.update();
@@ -115,11 +119,6 @@ class Game {
     setTimeout(() => {
       this.onResizeCallback(main.lastWidth, main.lastHeight);
     }, 500);
-
-    // let animateTest = new AnimateTest("test2", "970A9189C42E104AB20AD7ACF63D34F4");
-    // setTimeout(()=>{
-    //     animateTest.showEndCard();
-    // }, 2000);
   }
 
   initControls() {
@@ -161,11 +160,6 @@ class Game {
     var ratio = delta * 60;
 
     let controls = app.controls;
-
-    if (controls.isDown) {
-      let dx = 1.5 * (controls.mouseX - controls.prevX);
-      let dy = 1.5 * (controls.mouseY - controls.prevY);
-    }
 
     for (let obj of Globals.gameObjects) {
       obj.update(delta);
