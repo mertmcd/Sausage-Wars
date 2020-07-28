@@ -3,6 +3,8 @@ import Confetti from "../utils/confetti";
 import Ui from "./ui";
 import Globals from "./globals";
 import {Body, Sphere, Box, Vec3} from "cannon";
+import {Vector3, Box3, Triangle, Euler} from "three";
+import Sausage from "./sausage";
 
 //import AnimateTest from './animateTest';
 
@@ -12,8 +14,6 @@ var isTest = true;
 var data, confettiMaker;
 var updateFunction;
 let cam;
-let sausage;
-let sausages = [];
 
 class Game {
   constructor(_main) {}
@@ -25,6 +25,7 @@ class Game {
     main.isTest = isTest;
 
     Globals.game = this;
+    Globals.main = main;
 
     main.renderer.outputEncoding = THREE.GammaEncoding;
     main.renderer.gammaFactor = 2.2;
@@ -85,29 +86,42 @@ class Game {
 
     // Add sausages
 
+    // let sampleSausage = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
+    // //main.scene.add(sampleSausage);
+
+    // let ssgVec = new Vector3();
+    // let ssg3 = new Box3().setFromObject(sampleSausage);
+    // let ssgSize = ssg3.getSize(ssgVec);
+    // console.log(ssgSize);
+
     let number = 5;
-    let angle;
-    let radius = 600;
+    let radius = 500;
 
     for (let i = 0; i < number; i++) {
-      sausage = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
+      let angle = (i / (number * 0.5)) * Math.PI;
+
+      let pos = new Vector3(0 + radius * Math.sin(angle), 0, 0 - radius * Math.cos(angle));
+
+      let rot = new Euler(0, -(i * Math.PI) / 2.5, 0);
+
+      let sausage = new Sausage(pos, rot);
+      /*       sausage = THREE.SkeletonUtils.clone(main.assets.sausage.scene);
       main.scene.add(sausage);
 
       angle = (i / (number * 0.5)) * Math.PI;
-      sausage.position.set(0 + radius * Math.sin(angle), 100, 0 - radius * Math.cos(angle));
+      sausage.position.set(0 + radius * Math.sin(angle), 500, 0 - radius * Math.cos(angle));
       sausage.rotation.y = -(i * Math.PI) / 2.5;
 
       sausage.body = new Body({
         position: sausage.position,
-        mass: 100,
+        mass: 10,
       });
-      let shape = new Sphere(1);
+
+      let shape = new Box(new Vec3(ssgSize.x / 2, ssgSize.y / 2, ssgSize.z / 2));
       sausage.body.addShape(shape);
       main.world.add(sausage.body);
-      sausages.push(sausage);
+      sausages.push(sausage); */
     }
-
-    console.log(sausages[0]);
 
     if (fromRestart) {
       return;
@@ -171,13 +185,13 @@ class Game {
     let controls = app.controls;
 
     if (controls.isDown) {
-      let dx = controls.mouseX - controls.prevX;
-      sausages[0].body.position.x += dx;
-      //sausages[0].tx += dx;
-      console.log("mert");
+      let dx = 1.5 * (controls.mouseX - controls.prevX);
+      let dy = 1.5 * (controls.mouseY - controls.prevY);
     }
 
-    for (let ssg of sausages) ssg.position.copy(ssg.body.position);
+    for (let obj of Globals.gameObjects) {
+      obj.update(delta);
+    }
 
     confettiMaker && confettiMaker.update();
 
