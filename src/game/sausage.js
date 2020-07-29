@@ -33,8 +33,6 @@ export default class Sausage extends Object3D {
 
     Globals.gameObjects.push(this);
 
-    this.initAnimation();
-
     let ssg3 = new Box3().setFromObject(this);
     let ssgSize = ssg3.getSize(new Vector3());
 
@@ -48,6 +46,9 @@ export default class Sausage extends Object3D {
 
     this.body.position.copy(this.position);
     //this.body.quaternion.copy(this.quaternion);
+
+    this.initAnimation();
+
     this.updateWorldMatrix(true);
   }
 
@@ -71,13 +72,11 @@ export default class Sausage extends Object3D {
     this.position.copy(this.body.position);
     // this.quaternion.copy(this.body.quaternion);
 
-    if (this.controls.isDown && !this.isClicked) {
+    if (this.controls.isDown) {
       this.isClicked = true;
-      console.log("mert");
       this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
     } else if (!this.controls.isDown && this.isClicked) {
       this.isClicked = false;
-      console.log("can");
       this.animManager.fadeToAction("idle", false);
     }
 

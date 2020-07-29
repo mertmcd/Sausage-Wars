@@ -4,10 +4,10 @@ export default class PlayerController {
   constructor(player) {
     this.player = player;
     this.controls = app.controls;
-    this.isClicked;
+    this.isClicked = false;
   }
   update(delta) {
-    this.isClicked = false;
+    //this.isClicked = false;
     if (this.controls.isDown) {
       this.isClicked = true;
       this.player.body.angularDamping = 1;
@@ -27,11 +27,12 @@ export default class PlayerController {
       this.player.body.velocity.x = dx;
       this.player.body.velocity.z = dy;
       this.player.rotation.y = rota;
-    }
-
-    if (!this.isClicked) {
+      console.log("mert");
+    } else if (!this.controls.isDown && this.isClicked) {
       this.player.body.velocity.x = 0;
       this.player.body.velocity.z = 0;
+      this.isClicked = false;
+      console.log("can");
     }
   }
 }
