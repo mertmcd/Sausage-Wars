@@ -1,17 +1,20 @@
+import Sausage from "./sausage";
+
 export default class PlayerController {
   constructor(player) {
     this.player = player;
+    this.controls = app.controls;
+    this.isClicked;
   }
   update(delta) {
-    let controls = app.controls;
-    let isClicked = false;
-
-    if (controls.isDown) {
+    this.isClicked = false;
+    if (this.controls.isDown) {
+      this.isClicked = true;
       this.player.body.angularDamping = 1;
-      isClicked = true;
+      // Sausage.initAnimation();
 
-      let dx = 0.05 * (controls.mouseX - controls.downX);
-      let dy = 0.05 * (controls.mouseY - controls.downY);
+      let dx = 0.05 * (this.controls.mouseX - this.controls.downX);
+      let dy = 0.05 * (this.controls.mouseY - this.controls.downY);
 
       let rota = Math.atan2(dx, dy);
 
@@ -26,7 +29,7 @@ export default class PlayerController {
       this.player.rotation.y = rota;
     }
 
-    if (!isClicked) {
+    if (!this.isClicked) {
       this.player.body.velocity.x = 0;
       this.player.body.velocity.z = 0;
     }
