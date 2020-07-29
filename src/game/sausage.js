@@ -34,13 +34,12 @@ export default class Sausage extends Object3D {
     Globals.main.world.add(this.body);
 
     this.body.position.copy(this.position);
-    //this.body.position.y += ssgSize.y;
     this.body.quaternion.copy(this.quaternion);
 
     this.updateWorldMatrix(true);
   }
 
-  makePlayer() {
+  setPlayer() {
     this.controller = new PlayerController(this);
     this.isAi = false;
   }
@@ -49,6 +48,7 @@ export default class Sausage extends Object3D {
     this.body.position.y = 2.1;
     this.position.copy(this.body.position);
     this.quaternion.copy(this.body.quaternion);
+    this.rotation.y += 0.1;
 
     if (!this.isAi) {
       this.controller.update(delta);

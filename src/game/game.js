@@ -58,7 +58,7 @@ class Game {
     this.initControls();
 
     cam = main.camera;
-    cam.position.set(0, 30, 20);
+    cam.position.set(0, 20, 20);
     cam.lookAt(0, 0, 0);
 
     main.initCannonDebug();
@@ -100,9 +100,7 @@ class Game {
       else Globals.player = sausage;
     }
     //Globals.player.isAi = false;
-    Globals.player.tx = 0;
-    Globals.player.ty = 0;
-    Globals.player.makePlayer();
+    Globals.player.setPlayer();
 
     if (fromRestart) {
       return;
@@ -160,6 +158,9 @@ class Game {
     var ratio = delta * 60;
 
     let controls = app.controls;
+
+    cam.position.x = Globals.player.body.position.x; // 0
+    cam.position.z = Globals.player.body.position.z + 27; // 20
 
     for (let obj of Globals.gameObjects) {
       obj.update(delta);

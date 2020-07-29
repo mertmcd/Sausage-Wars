@@ -4,35 +4,34 @@ export default class PlayerController {
   }
   update(delta) {
     let controls = app.controls;
+    let isClicked = false;
 
     if (controls.isDown) {
       this.player.body.angularDamping = 1;
+      isClicked = true;
 
-      let dx = controls.mouseX - controls.downX;
-      let dy = controls.mouseY - controls.downY;
-      console.log("mouse x: " + controls.mouseX);
-      console.log("dwon x: " + controls.downX);
+      let dx = 0.05 * (controls.mouseX - controls.downX);
+      let dy = 0.05 * (controls.mouseY - controls.downY);
 
-      dx *= 0.0005;
-      dy *= 0.0005;
+      // dx = dx / Math.abs(dx);
+      // dy = dy / Math.abs(dy);
 
-      this.player.body.position.x += dx;
-      this.player.body.velocity.x = 0;
-      this.player.body.position.z += dy;
-      this.player.body.velocity.z = 0;
+      if (dx > 7) dx = 7;
+      else if (dx < -7) dx = -7;
 
-      // let dx = 0.03 * (controls.mouseX - controls.prevX);
+      if (dy > 7) dy = 7;
+      else if (dy < -7) dy = -7;
+
       // console.log("dx: " + dx);
-      // let dy = 0.03 * (controls.mouseY - controls.prevY);
       // console.log("dy: " + dy);
 
-      // this.player.tx += dx;
-      // this.player.ty += dy;
+      this.player.body.velocity.x = dx;
+      this.player.body.velocity.z = dy;
+    }
 
-      // this.player.body.position.x += (this.player.tx - this.player.body.position.x) * 0.1;
-      // this.player.body.position.z += (this.player.ty - this.player.body.position.z) * 0.1;
-      // console.log("posx: " + this.player.body.position.x);
-      // console.log("posy: " + this.player.body.position.z);
+    if (!isClicked) {
+      this.player.body.velocity.x = 0;
+      this.player.body.velocity.z = 0;
     }
   }
 }
