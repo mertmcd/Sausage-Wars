@@ -5,7 +5,7 @@ import {Body, Box, Vec3} from "cannon";
 import PlayerController from "./playercontroller";
 
 export default class Sausage extends Object3D {
-  constructor(pos = new Vector3(), rot = new Euler()) {
+  constructor(pos, rot) {
     super();
 
     // Add sausage mesh and body
@@ -34,7 +34,7 @@ export default class Sausage extends Object3D {
     Globals.main.world.add(this.body);
 
     this.body.position.copy(this.position);
-    // this.body.quaternion.copy(this.quaternion);
+    //this.body.quaternion.copy(this.quaternion);
 
     this.updateWorldMatrix(true);
   }
@@ -47,7 +47,7 @@ export default class Sausage extends Object3D {
   update(delta) {
     this.body.position.y = 2.1;
     this.position.copy(this.body.position);
-    //this.quaternion.copy(this.body.quaternion);
+    // this.quaternion.copy(this.body.quaternion);
 
     if (!this.isAi) {
       this.controller.update(delta);
