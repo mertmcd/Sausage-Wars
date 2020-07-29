@@ -75,9 +75,14 @@ export default class Sausage extends Object3D {
     if (this.controls.isDown) {
       this.isClicked = true;
       this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
+      console.log("mert");
     } else if (!this.controls.isDown && this.isClicked) {
       this.isClicked = false;
-      this.animManager.fadeToAction("idle", false);
+      console.log("can");
+      //if (!window.test) {
+      this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
+      //  window.test = true;
+      // }
     }
 
     if (!this.isAi) {
