@@ -1,3 +1,5 @@
+import Globals from "./globals";
+
 export default class AiController {
   constructor(ai) {
     this.ai = ai;
@@ -14,16 +16,19 @@ export default class AiController {
         this.moveAi();
       }
     }
+
+    this.ai.body.angularDamping = 1;
+
+    if (this.ai.body.position.x >= 9) this.ai.body.position.x = 9;
+    else if (this.ai.body.position.x <= -9) this.ai.body.position.x = -9;
+
+    if (this.ai.body.position.z > 9) this.ai.body.position.z = 9;
+    else if (this.ai.body.position.z < -9) this.ai.body.position.z = -9;
   }
 
   moveAi() {
     let dx = Math.random() * 20 - 10;
-    console.log("x: " + dx);
     let dy = Math.random() * 20 - 10;
-    console.log("y: " + dy);
-
-    //   let dx = 7;
-    //   let dy = 7;
 
     let rota = Math.atan2(dx, dy);
 
@@ -37,15 +42,16 @@ export default class AiController {
     this.ai.body.velocity.z = dy;
     this.ai.rotation.y = rota;
 
-    this.ai.body.velocity.x = 0;
-    this.ai.body.velocity.z = 0;
+    /* if (!Globals.isClicked) {
+      this.ai.body.velocity.x = 0;
+      this.ai.body.velocity.z = 0;
+    } */
   }
 
   setActive(isActive) {
     this.isActive = isActive;
-    if (isActive) {
-      this.moveAi();
-    }
+    if (isActive) this.moveAi();
+
     this.timer = 0;
   }
 }

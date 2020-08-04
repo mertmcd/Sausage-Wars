@@ -99,11 +99,12 @@ class Game {
       if (i != 0) {
         Globals.ai = sausage;
         Globals.ai.setAi();
+        Globals.ai.tag = "enemy";
         Globals.sausages.push(sausage);
       } else Globals.player = sausage;
     }
-    //Globals.player.isAi = false;
     Globals.player.setPlayer();
+    console.log(Globals.sausages);
 
     if (fromRestart) {
       return;

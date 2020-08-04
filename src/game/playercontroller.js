@@ -39,5 +39,10 @@ export default class PlayerController {
       this.player.body.velocity.z = 0;
       this.isClicked = false;
     }
+    if (this.player.body.position.x >= 9) this.player.body.position.x = 9;
+    else if (this.player.body.position.x <= -9) this.player.body.position.x = -9;
+
+    if (this.player.body.position.z > 9) this.player.body.position.z = 9;
+    else if (this.player.body.position.z < -9) this.player.body.position.z = -9;
   }
 }

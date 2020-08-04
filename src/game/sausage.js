@@ -61,8 +61,15 @@ export default class Sausage extends Object3D {
 
   initAnimation() {
     let origAnims = Globals.main.assets.sausage.animations;
-    //console.log(origAnims);
-    let anims = [THREE.AnimationUtils.subclip(origAnims[0], "idle", 0, 500), AnimationUtils.subclip(origAnims[1], "kosma", 0, 500)];
+    console.log(origAnims);
+    let anims = [
+      THREE.AnimationUtils.subclip(origAnims[0], "idle", 0, 500),
+      THREE.AnimationUtils.subclip(origAnims[1], "kosma", 0, 500),
+      THREE.AnimationUtils.subclip(origAnims[2], "kafaatma", 0, 500),
+      THREE.AnimationUtils.subclip(origAnims[3], "sarsilma", 0, 500),
+      THREE.AnimationUtils.subclip(origAnims[4], "dans", 0, 500),
+      THREE.AnimationUtils.subclip(origAnims[5], "dusme", 0, 500),
+    ];
 
     this.animManager = new AnimManager(this.mesh, anims);
     this.animManager.startAnimation("idle", false);
@@ -84,18 +91,29 @@ export default class Sausage extends Object3D {
     this.position.copy(this.body.position);
     // this.quaternion.copy(this.body.quaternion);
 
+    if (!this.isAi) {
+      this.animPlayer();
+      this.controller.update(delta);
+    } else {
+      this.animAi();
+      this.controller.update(delta);
+    }
+  }
+
+  animPlayer() {
     if (this.controls.isDown) {
       this.isClicked = true;
       this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
-      console.log("mert");
     } else if (!this.controls.isDown && this.isClicked) {
       this.isClicked = false;
+      this.animManager.startAnimation("kafaatma", false);
       this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
-      console.log("can");
     }
+  }
 
-    if (!this.isAi) {
-      this.controller.update(delta);
-    } else this.controller.update(delta);
+  animAi() {
+    if (this.controls.isDown) {
+      this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
+    }
   }
 }
