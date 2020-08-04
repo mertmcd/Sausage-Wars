@@ -4,6 +4,7 @@ import Globals from "./globals";
 import {Body, Box, Vec3} from "cannon";
 import PlayerController from "./playercontroller";
 import AnimManager from "../utils/animManager";
+import AiController from "./aicontroller";
 
 export default class Sausage extends Object3D {
   constructor(pos, rot) {
@@ -11,25 +12,31 @@ export default class Sausage extends Object3D {
 
     this.controls = app.controls;
     this.isClicked = false;
-
-    // Add sausage mesh and body
-
     this.isAi = true;
+
+    // Add circle
+
+    let geometry = new THREE.CircleGeometry(2, 16);
+    let material = new THREE.MeshBasicMaterial({
+      color: 0x787878,
+      side: THREE.DoubleSide,
+    });
+    let circle = new THREE.Mesh(geometry, material);
+    circle.scale.multiplyScalar(0.3);
+    circle.position.copy(this.position);
+    circle.position.y = -1.05;
+    circle.rotation.x = Math.PI / 2;
+    this.add(circle);
+
+    // Add sausage mesh
 
     this.mesh = THREE.SkeletonUtils.clone(Globals.main.assets.sausage.scene);
     this.add(this.mesh);
     this.mesh.scale.multiplyScalar(0.01);
-    this.mesh.position.y = -1.1;
+    this.mesh.position.y = -1.05;
     Globals.main.scene.add(this);
     this.position.copy(pos);
     this.rotation.copy(rot);
-
-    // let geometry = new THREE.CircleGeometry(2, 16);
-    // let material = new THREE.MeshBasicMaterial({color: 0xffff00});
-    // let circle = new THREE.Mesh(geometry, material);
-    // circle.scale.multiplyScalar(0.11);
-    // circle.position.copy(this.position);
-    // this.add(circle);
 
     Globals.gameObjects.push(this);
 
@@ -40,7 +47,7 @@ export default class Sausage extends Object3D {
       mass: 10,
     });
 
-    let shape = new Box(new Vec3(ssgSize.x / 2, ssgSize.y / 2, ssgSize.z / 2));
+    let shape = new Box(new Vec3(ssgSize.x / 2.5, ssgSize.y / 2.5, ssgSize.z / 2.5));
     this.body.addShape(shape);
     Globals.main.world.add(this.body);
 
@@ -66,6 +73,11 @@ export default class Sausage extends Object3D {
     this.isAi = false;
   }
 
+  setAi() {
+    this.controller = new AiController(this);
+    this.isAi = true;
+  }
+
   update(delta) {
     this.animManager.update(delta);
     this.body.position.y = 2.1;
@@ -78,15 +90,12 @@ export default class Sausage extends Object3D {
       console.log("mert");
     } else if (!this.controls.isDown && this.isClicked) {
       this.isClicked = false;
-      console.log("can");
-      //if (!window.test) {
       this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
-      //  window.test = true;
-      // }
+      console.log("can");
     }
 
     if (!this.isAi) {
       this.controller.update(delta);
-    }
+    } else this.controller.update(delta);
   }
 }

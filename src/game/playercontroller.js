@@ -1,19 +1,26 @@
-import Sausage from "./sausage";
+import Globals from "./globals";
 
 export default class PlayerController {
   constructor(player) {
     this.player = player;
     this.controls = app.controls;
     this.isClicked = false;
+    this.activateEnemy = false;
   }
   update(delta) {
     //this.isClicked = false;
     if (this.controls.isDown) {
+      if (!this.activateEnemy) {
+        this.activateEnemy = true;
+        for (let i = 0; i < Globals.sausages.length; i++) {
+          Globals.sausages[i].controller.setActive(true);
+        }
+      }
       this.isClicked = true;
       this.player.body.angularDamping = 1;
-      // Sausage.initAnimation();
 
       let dx = 0.05 * (this.controls.mouseX - this.controls.downX);
+
       let dy = 0.05 * (this.controls.mouseY - this.controls.downY);
 
       let rota = Math.atan2(dx, dy);
@@ -27,12 +34,10 @@ export default class PlayerController {
       this.player.body.velocity.x = dx;
       this.player.body.velocity.z = dy;
       this.player.rotation.y = rota;
-      console.log("mert");
     } else if (!this.controls.isDown && this.isClicked) {
       this.player.body.velocity.x = 0;
       this.player.body.velocity.z = 0;
       this.isClicked = false;
-      console.log("can");
     }
   }
 }

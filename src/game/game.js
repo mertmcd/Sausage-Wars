@@ -96,10 +96,11 @@ class Game {
       let rot = new Euler(0, -angle, 0);
       let pos = new Vector3(0 + radius * Math.sin(angle), 0, 0 - radius * Math.cos(angle));
       let sausage = new Sausage(pos, rot);
-      if (i != 0) Globals.sausages.push(sausage);
-      else Globals.player = sausage;
-      //  console.log(angle);
-      // console.log(rot);
+      if (i != 0) {
+        Globals.ai = sausage;
+        Globals.ai.setAi();
+        Globals.sausages.push(sausage);
+      } else Globals.player = sausage;
     }
     //Globals.player.isAi = false;
     Globals.player.setPlayer();
