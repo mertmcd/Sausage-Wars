@@ -15,6 +15,7 @@ var isTest = true;
 var data, confettiMaker;
 var updateFunction;
 let cam;
+let isEnd = false;
 
 class Game {
   constructor(_main) {}
@@ -99,12 +100,23 @@ class Game {
       if (i != 0) {
         Globals.ai = sausage;
         Globals.ai.setAi();
-        Globals.ai.tag = "enemy";
+        Globals.ai.body.tag = "enemy";
         Globals.sausages.push(sausage);
-      } else Globals.player = sausage;
+      } else {
+        Globals.player = sausage;
+        Globals.player.body.tag = "enemy";
+      }
     }
     Globals.player.setPlayer();
-    console.log(Globals.sausages);
+
+    for (let enemy of Globals.sausages) {
+      enemy.body.addEventListener("collide", function (e) {
+        if (e.body.tag === "enemy") {
+          this.animManager.startAnimation("kafaatma", false);
+          //this.animManager.fadeToAction("kosma", false);
+        }
+      });
+    }
 
     if (fromRestart) {
       return;

@@ -1,4 +1,5 @@
 import Globals from "./globals";
+import {Vector3} from "three";
 
 export default class AiController {
   constructor(ai) {
@@ -9,6 +10,7 @@ export default class AiController {
     this.isActive = false;
   }
   update(delta) {
+    this.ai.body.velocity.y = 0;
     if (this.isActive) {
       this.timer += delta;
       if (this.timer >= this.decisionTime) {
@@ -19,39 +21,35 @@ export default class AiController {
 
     this.ai.body.angularDamping = 1;
 
-    if (this.ai.body.position.x >= 9) this.ai.body.position.x = 9;
-    else if (this.ai.body.position.x <= -9) this.ai.body.position.x = -9;
+    let posx = this.ai.body.position.x;
+    let posz = this.ai.body.position.z;
 
-    if (this.ai.body.position.z > 9) this.ai.body.position.z = 9;
-    else if (this.ai.body.position.z < -9) this.ai.body.position.z = -9;
+    if (posx > 9 || posx < -9 || posz > 9 || posz < -9) this.moveAi();
   }
 
   moveAi() {
-    let dx = Math.random() * 20 - 10;
-    let dy = Math.random() * 20 - 10;
+    let ranx = Math.random() * 16 - 8;
+    let ranz = Math.random() * 16 - 8;
 
-    let rota = Math.atan2(dx, dy);
+    let ang = Math.atan2(ranx - this.ai.body.position.x, ranz - this.ai.body.position.z);
 
-    if (dx > 7) dx = 7;
-    else if (dx < -7) dx = -7;
+    let dx = ranx - this.ai.body.position.x;
+    let dz = ranz - this.ai.body.position.z;
 
-    if (dy > 7) dy = 7;
-    else if (dy < -7) dy = -7;
+    this.ai.body.velocity.x = Math.sin(ang);
+    this.ai.body.velocity.z = Math.cos(ang);
 
-    this.ai.body.velocity.x = dx;
-    this.ai.body.velocity.z = dy;
+    let velo = new Vector3().copy(this.ai.body.velocity);
+    velo.setLength(6);
+    this.ai.body.velocity.copy(velo);
+
+    let rota = Math.atan2(dx, dz);
     this.ai.rotation.y = rota;
-
-    /* if (!Globals.isClicked) {
-      this.ai.body.velocity.x = 0;
-      this.ai.body.velocity.z = 0;
-    } */
   }
 
   setActive(isActive) {
     this.isActive = isActive;
     if (isActive) this.moveAi();
-
     this.timer = 0;
   }
 }

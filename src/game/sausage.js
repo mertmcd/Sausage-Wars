@@ -35,8 +35,6 @@ export default class Sausage extends Object3D {
     this.mesh.scale.multiplyScalar(0.01);
     this.mesh.position.y = -1.05;
     Globals.main.scene.add(this);
-    this.position.copy(pos);
-    this.rotation.copy(rot);
 
     Globals.gameObjects.push(this);
 
@@ -51,17 +49,16 @@ export default class Sausage extends Object3D {
     this.body.addShape(shape);
     Globals.main.world.add(this.body);
 
+    this.position.copy(pos);
+    this.rotation.copy(rot);
+
     this.body.position.copy(this.position);
     //this.body.quaternion.copy(this.quaternion);
 
-    this.initAnimation();
+    // Anim Manager
 
-    this.updateWorldMatrix(true);
-  }
-
-  initAnimation() {
     let origAnims = Globals.main.assets.sausage.animations;
-    console.log(origAnims);
+
     let anims = [
       THREE.AnimationUtils.subclip(origAnims[0], "idle", 0, 500),
       THREE.AnimationUtils.subclip(origAnims[1], "kosma", 0, 500),
@@ -72,17 +69,15 @@ export default class Sausage extends Object3D {
     ];
 
     this.animManager = new AnimManager(this.mesh, anims);
+    this.body.animManager = this.animManager;
+
+    this.initAnimation();
+
+    this.updateWorldMatrix(true);
+  }
+
+  initAnimation() {
     this.animManager.startAnimation("idle", false);
-  }
-
-  setPlayer() {
-    this.controller = new PlayerController(this);
-    this.isAi = false;
-  }
-
-  setAi() {
-    this.controller = new AiController(this);
-    this.isAi = true;
   }
 
   update(delta) {
@@ -99,6 +94,15 @@ export default class Sausage extends Object3D {
       this.controller.update(delta);
     }
   }
+  setPlayer() {
+    this.controller = new PlayerController(this);
+    this.isAi = false;
+  }
+
+  setAi() {
+    this.controller = new AiController(this);
+    this.isAi = true;
+  }
 
   animPlayer() {
     if (this.controls.isDown) {
@@ -112,8 +116,6 @@ export default class Sausage extends Object3D {
   }
 
   animAi() {
-    if (this.controls.isDown) {
-      this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
-    }
+    if (this.controls.isDown) this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
   }
 }
