@@ -9,8 +9,6 @@ export default class Ai extends Sausage {
 
     this.controller = new AiController(this);
     this.isAi = true;
-    // Globals.Ai = this;
-    this.mert = false;
 
     this.body.currentState = Globals.states.IDLE;
     this.initAnimation();
@@ -23,24 +21,17 @@ export default class Ai extends Sausage {
 
     this.controller.update(delta);
 
-    if (this.body.currentState === Globals.states.IDLE) {
-      if (this.controller.isActive) {
-        this.setState(Globals.states.MOVE);
-        this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
-      }
-    } else if (this.body.currentState === Globals.states.MOVE) {
-      // this.body.currentState === Globals.states.MOVE;
-      this.animManager.startAnimation("kosma", false);
-      console.log("can");
-      //this.body.currentState = Globals.states.MOVE;
+    if (this.body.currentState === Globals.states.IDLE && this.controller.isActive) {
+      // this.setState(Globals.states.MOVE);
+      this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
     }
   }
 
   setState(state) {
-    this.currentState = state;
+    this.body.currentState = state;
   }
 
-  animAi() {
-    //if (this.controls.isDown) ;
-  }
+  //   animAi() {
+  //     //if (this.controls.isDown) ;
+  //   }
 }

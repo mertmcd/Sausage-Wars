@@ -106,7 +106,6 @@ class Game {
       enemy.body.addEventListener("collide", function (e) {
         if (e.body.tag === "enemy") {
           // e.body.currentState = Globals.states.ATTACK;
-          console.log("mert");
           this.animManager.startAnimation("kafaatma", false);
         }
       });
