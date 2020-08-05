@@ -49,7 +49,7 @@ export default class AiController {
     this.ai.body.velocity.z = Math.cos(ang);
 
     let velo = new Vector3().copy(this.ai.body.velocity);
-    velo.setLength(6);
+    velo.setLength(5);
     this.ai.body.velocity.copy(velo);
 
     let rota = Math.atan2(dx, dz);

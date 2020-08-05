@@ -105,7 +105,7 @@ class Game {
     for (let enemy of Globals.sausages) {
       enemy.body.addEventListener("collide", function (e) {
         if (e.body.tag === "enemy") {
-          // e.body.currentState = Globals.states.ATTACK;
+          e.body.currentState = Globals.states.ATTACK;
           this.animManager.startAnimation("kafaatma", false);
         }
       });

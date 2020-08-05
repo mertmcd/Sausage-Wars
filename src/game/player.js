@@ -1,6 +1,6 @@
 import Sausage from "./sausage";
 import PlayerController from "./playercontroller";
-import {LoopRepeat} from "three";
+import {LoopRepeat, LoopOnce} from "three";
 import Globals from "./globals";
 
 export default class Player extends Sausage {
@@ -21,24 +21,16 @@ export default class Player extends Sausage {
 
     this.controller.update(delta);
 
-    // if (this.body.currentState === Globals.states.IDLE && this.controller.isClicked) {
-    // //  this.setState(Globals.states.MOVE);
-    //   this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
-    // } else if (this.body.currentState === Globals.states.IDLE && !this.controller.isClicked) {
-    //   // this.animManager.startAnimation("kafaatma", false);
-    //   console.log("mert");
-    //   this.animManager.startAnimation("idle", {loopType: LoopRepeat});
-    //   this.setState(Globals.states.IDLE);
-    // }
-
     if (this.body.currentState === Globals.states.IDLE) {
       if (this.controller.isClicked) {
         this.setState(Globals.states.MOVE);
         this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
       }
     } else if (this.body.currentState === Globals.states.MOVE && !this.controller.isClicked) {
-      this.animManager.startAnimation("kafaatma", false);
-      this.setState(Globals.states.ATTACK);
+      this.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
+      this.animManager.curAnim.onComplete(() => {
+        this.setState(Globals.states.ATTACK);
+      });
     } else if (this.body.currentState === Globals.states.ATTACK && !this.controller.isClicked) {
       this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
       this.setState(Globals.states.IDLE);
@@ -48,15 +40,4 @@ export default class Player extends Sausage {
   setState(state) {
     this.body.currentState = state;
   }
-
-  //   animPlayer() {
-  //     if (this.controls.isDown) {
-  //       this.isClicked = true;
-  //       this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
-  //     } else if (!this.controls.isDown && this.isClicked) {
-  //       this.isClicked = false;
-  //       this.animManager.startAnimation("kafaatma", false);
-  //       this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
-  //     }
-  //   }
 }
