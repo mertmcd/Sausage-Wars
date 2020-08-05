@@ -38,3 +38,11 @@
 // // console.log("x: " + this.player.body.position.x);
 // // console.log("y: " + this.player.body.position.y);
 // // console.log("z: " + this.player.body.position.z);
+
+// this.path.body = new Body({
+//   position: this.path.position,
+//   mass: 0,
+// });
+// let pathShape = new Box(new Vec3(10, 1, 10));
+// this.path.body.addShape(pathShape);
+// main.world.add(this.path.body);

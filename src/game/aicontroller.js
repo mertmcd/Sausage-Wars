@@ -1,4 +1,5 @@
 import Globals from "./globals";
+// import Ai from "./ai";
 import {Vector3} from "three";
 
 export default class AiController {
@@ -8,9 +9,18 @@ export default class AiController {
     this.timer = 0;
     this.decisionTime = 2;
     this.isActive = false;
+    this.activateEnemy = false;
+    this.ai.body.angularDamping = 1;
   }
+
   update(delta) {
     this.ai.body.velocity.y = 0;
+
+    if (this.controls.isDown && !this.activateEnemy) {
+      this.activateEnemy = true;
+      this.setActive(true);
+    }
+
     if (this.isActive) {
       this.timer += delta;
       if (this.timer >= this.decisionTime) {
@@ -19,12 +29,11 @@ export default class AiController {
       }
     }
 
-    this.ai.body.angularDamping = 1;
-
     let posx = this.ai.body.position.x;
     let posz = this.ai.body.position.z;
-
-    if (posx > 9 || posx < -9 || posz > 9 || posz < -9) this.moveAi();
+    if (posx > 9 || posx < -9 || posz > 9 || posz < -9) {
+      this.moveAi();
+    }
   }
 
   moveAi() {

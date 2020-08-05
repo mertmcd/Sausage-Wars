@@ -5,7 +5,8 @@ import Globals from "./globals";
 import {Body, Sphere, Box, Vec3} from "cannon";
 import {Vector3, Box3, Triangle, Euler} from "three";
 import Sausage from "./sausage";
-import PlayerController from "./playercontroller";
+import Player from "./player";
+import Ai from "./ai";
 
 //import AnimateTest from './animateTest';
 
@@ -78,15 +79,7 @@ class Game {
     this.path.position.set(0, 0, 0);
     main.scene.add(this.path);
 
-    // this.path.body = new Body({
-    //   position: this.path.position,
-    //   mass: 0,
-    // });
-    // let pathShape = new Box(new Vec3(10, 1, 10));
-    // this.path.body.addShape(pathShape);
-    // main.world.add(this.path.body);
-
-    // Add sausages
+    // Add sausages to the scene
 
     let number = 5;
     let radius = 7;
@@ -96,24 +89,25 @@ class Game {
       let angle = (i / (number * 0.5)) * Math.PI;
       let rot = new Euler(0, -angle, 0);
       let pos = new Vector3(0 + radius * Math.sin(angle), 0, 0 - radius * Math.cos(angle));
-      let sausage = new Sausage(pos, rot);
+
       if (i != 0) {
-        Globals.ai = sausage;
-        Globals.ai.setAi();
-        Globals.ai.body.tag = "enemy";
-        Globals.sausages.push(sausage);
+        let ai = new Ai(pos, rot);
+        ai.body.tag = "enemy";
+        Globals.sausages.push(ai);
       } else {
-        Globals.player = sausage;
+        Globals.player = new Player(pos, rot);
         Globals.player.body.tag = "enemy";
       }
     }
-    Globals.player.setPlayer();
+
+    // Collision
 
     for (let enemy of Globals.sausages) {
       enemy.body.addEventListener("collide", function (e) {
         if (e.body.tag === "enemy") {
+          // e.body.currentState = Globals.states.ATTACK;
+          console.log("mert");
           this.animManager.startAnimation("kafaatma", false);
-          //this.animManager.fadeToAction("kosma", false);
         }
       });
     }

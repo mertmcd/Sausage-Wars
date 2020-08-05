@@ -1,13 +1,17 @@
-import {Object3D, Vector3, Box3Helper, Box3, Euler, AnimationUtils, LoopRepeat} from "three";
+import {Object3D, Vector3, Box3, Euler, AnimationUtils, LoopRepeat} from "three";
 import assetManager from "./assetManager";
 import Globals from "./globals";
 import {Body, Box, Vec3} from "cannon";
-import PlayerController from "./playercontroller";
 import AnimManager from "../utils/animManager";
-import AiController from "./aicontroller";
+// import Player from "./player";
+// import PlayerController from "./playercontroller";
+// import Ai from "./ai";
+// import AiController from "./aicontroller";
 
 export default class Sausage extends Object3D {
   constructor(pos, rot) {
+    //  console.log("dem");
+
     super();
 
     this.controls = app.controls;
@@ -70,52 +74,11 @@ export default class Sausage extends Object3D {
 
     this.animManager = new AnimManager(this.mesh, anims);
     this.body.animManager = this.animManager;
-
-    this.initAnimation();
-
-    this.updateWorldMatrix(true);
   }
+
+  update(delta) {}
 
   initAnimation() {
     this.animManager.startAnimation("idle", false);
-  }
-
-  update(delta) {
-    this.animManager.update(delta);
-    this.body.position.y = 2.1;
-    this.position.copy(this.body.position);
-    // this.quaternion.copy(this.body.quaternion);
-
-    if (!this.isAi) {
-      this.animPlayer();
-      this.controller.update(delta);
-    } else {
-      this.animAi();
-      this.controller.update(delta);
-    }
-  }
-  setPlayer() {
-    this.controller = new PlayerController(this);
-    this.isAi = false;
-  }
-
-  setAi() {
-    this.controller = new AiController(this);
-    this.isAi = true;
-  }
-
-  animPlayer() {
-    if (this.controls.isDown) {
-      this.isClicked = true;
-      this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
-    } else if (!this.controls.isDown && this.isClicked) {
-      this.isClicked = false;
-      this.animManager.startAnimation("kafaatma", false);
-      this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
-    }
-  }
-
-  animAi() {
-    if (this.controls.isDown) this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
   }
 }
