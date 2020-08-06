@@ -102,7 +102,7 @@ class Game {
 
     // Collision
 
-    for (let enemy of Globals.sausages) {
+    for (let enemy of Globals.gameObjects) {
       enemy.body.addEventListener("collide", function (e) {
         if (e.body.tag === "enemy") {
           e.body.currentState = Globals.states.ATTACK;

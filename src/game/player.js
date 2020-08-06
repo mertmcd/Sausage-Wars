@@ -56,16 +56,19 @@ export default class Player extends Sausage {
       if (this.controller.isClicked) {
         this.setState(Globals.states.MOVE);
         this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
+        console.log("medsdsrt");
       }
     } else if (this.body.currentState === Globals.states.MOVE && !this.controller.isClicked) {
+      this.setState(Globals.states.ATTACK);
       this.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
       this.animManager.curAnim.onComplete(() => {
-        this.setState(Globals.states.ATTACK);
+        this.setState(Globals.states.IDLE);
+        this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
       });
-    } else if (this.body.currentState === Globals.states.ATTACK && !this.controller.isClicked) {
+    } /* else if (this.body.currentState === Globals.states.ATTACK && !this.controller.isClicked) {
       this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
       this.setState(Globals.states.IDLE);
-    }
+    } */
   }
 
   setState(state) {
