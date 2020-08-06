@@ -41,7 +41,7 @@ export default class Sausage extends Object3D {
     Globals.main.scene.add(this);
 
     Globals.gameObjects.push(this);
-    console.log(Globals.gameObjects);
+    //console.log(Globals.gameObjects);
 
     let ssg3 = new Box3().setFromObject(this);
     let ssgSize = ssg3.getSize(new Vector3());
@@ -81,49 +81,5 @@ export default class Sausage extends Object3D {
 
   initAnimation() {
     this.animManager.startAnimation("idle", false);
-  }
-
-  detectCollisions() {
-    let obj1;
-    let obj2;
-
-    let distance = Math.sqrt((obj2.x - obj1.x) * (obj2.x - obj1.x) + (obj2.y - obj1.y) * (obj2.y - obj1.y));
-
-    let vCollisionNorm = {
-      x: vCollision.x / distance,
-      y: vCollision.y / distance,
-    };
-
-    let vRelativeVelocity = {
-      x: obj1.vx - obj2.vx,
-      y: obj1.vy - obj2.vy,
-    };
-
-    let speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
-
-    // if (speed < 0) {
-    //   break;
-    // }
-
-    obj1.vx -= speed * vCollisionNorm.x;
-    obj1.vy -= speed * vCollisionNorm.y;
-    obj2.vx += speed * vCollisionNorm.x;
-    obj2.vy += speed * vCollisionNorm.y;
-
-    for (let i = 0; i < Globals.gameObjects.length; i++) {
-      Globals.gameObjects[i].isColliding = false;
-    }
-
-    for (let i = 0; i < Globals.gameObjects.length; i++) {
-      obj1 = Globals.gameObjects[i];
-      for (let j = i + 1; j < Globals.gameObjects.length; j++) {
-        obj2 = Globals.gameObjects[j];
-
-        if (rectIntersect(obj1.x, obj1.y, obj1.width, obj1.height, obj2.x, obj2.y, obj2.width, obj2.height)) {
-          obj1.isColliding = true;
-          obj2.isColliding = true;
-        }
-      }
-    }
   }
 }
