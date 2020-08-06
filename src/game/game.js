@@ -3,7 +3,7 @@ import Confetti from "../utils/confetti";
 import Ui from "./ui";
 import Globals from "./globals";
 import {Body, Sphere, Box, Vec3} from "cannon";
-import {Vector3, Box3, Triangle, Euler} from "three";
+import {Vector3, Box3, Triangle, Euler, LoopOnce} from "three";
 import Sausage from "./sausage";
 import Player from "./player";
 import Ai from "./ai";
@@ -106,7 +106,7 @@ class Game {
       enemy.body.addEventListener("collide", function (e) {
         if (e.body.tag === "enemy") {
           e.body.currentState = Globals.states.ATTACK;
-          this.animManager.startAnimation("kafaatma", false);
+          this.animManager.fadeToAction("kafaatma", {duration: 0.2, loopType: LoopOnce});
         }
       });
     }

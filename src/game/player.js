@@ -1,6 +1,6 @@
 import Sausage from "./sausage";
 import PlayerController from "./playercontroller";
-import {LoopRepeat, LoopOnce} from "three";
+import {LoopRepeat, LoopOnce, Vector3} from "three";
 import Globals from "./globals";
 
 export default class Player extends Sausage {
@@ -12,7 +12,38 @@ export default class Player extends Sausage {
 
     this.body.currentState = Globals.states.IDLE;
     this.initAnimation();
+
+    // Add triangle
+
+    let geo = new THREE.Geometry();
+    var v1 = new THREE.Vector3(-0.5, 0, 1); // 010
+    var v2 = new THREE.Vector3(0.5, 0, 1); // 011
+    var v3 = new THREE.Vector3(0, 0, 2); // 0005
+
+    geo.vertices.push(v1);
+    geo.vertices.push(v2);
+    geo.vertices.push(v3);
+
+    let mat = new THREE.MeshBasicMaterial({
+      color: 0xff0000,
+      side: THREE.DoubleSide,
+    });
+
+    geo.faces.push(new THREE.Face3(0, 1, 2));
+    geo.computeFaceNormals();
+
+    let triangle = new THREE.Mesh(geo, mat);
+
+    triangle.scale.multiplyScalar(0.4);
+    triangle.position.copy(this.circle.position);
+    // triangle.position.x = 1;
+    triangle.position.y = -1;
+    triangle.position.z = 0.5;
+
+    //triangle.rotation.z = Math.PI / 2;
+    this.add(triangle);
   }
+
   update(delta) {
     this.animManager.update(delta);
 

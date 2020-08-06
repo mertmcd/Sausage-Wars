@@ -13,7 +13,8 @@ Globals.states = {
   IDLE: 0,
   MOVE: 1,
   ATTACK: 2,
-  DIE: 3,
+  HIT: 3,
+  DIE: 4,
 };
 
 export default Globals;

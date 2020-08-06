@@ -25,12 +25,13 @@ export default class Sausage extends Object3D {
       color: 0x787878,
       side: THREE.DoubleSide,
     });
-    let circle = new THREE.Mesh(geometry, material);
-    circle.scale.multiplyScalar(0.3);
-    circle.position.copy(this.position);
-    circle.position.y = -1.05;
-    circle.rotation.x = Math.PI / 2;
-    this.add(circle);
+    this.circle = new THREE.Mesh(geometry, material);
+    this.circle.scale.multiplyScalar(0.3);
+    this.circle.position.copy(this.position);
+    this.circle.position.y = -1.05;
+    this.circle.rotation.x = Math.PI / 2;
+    this.add(this.circle);
+    console.log(this.circle.position);
 
     // Add sausage mesh
 
@@ -49,7 +50,7 @@ export default class Sausage extends Object3D {
       mass: 10,
     });
 
-    let shape = new Box(new Vec3(ssgSize.x / 2.5, ssgSize.y / 2.5, ssgSize.z / 2.5));
+    let shape = new Box(new Vec3(ssgSize.x / 5, ssgSize.y / 2.5, ssgSize.z / 5));
     this.body.addShape(shape);
     Globals.main.world.add(this.body);
 
