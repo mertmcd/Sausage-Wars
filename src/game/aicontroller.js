@@ -8,9 +8,9 @@ export default class AiController {
     this.controls = app.controls;
     this.timer = 0;
     this.decisionTime = 3;
+    this.ai.body.angularDamping = 1;
     this.isActive = false;
     this.activateEnemy = false;
-    this.ai.body.angularDamping = 1;
     this.chaser = false;
 
     this.targetRotationQuaternion = new Quaternion();
@@ -38,12 +38,16 @@ export default class AiController {
           console.log("mert");
           this.detectTarget();
           this.chaser = true;
-        } else this.moveAi();
-        // this.detectTarget();
+        } else {
+          this.moveAi();
+          // this.detectTarget();
+          console.log("can");
+        }
         this.timer = 0;
       }
-      this.chaseTarget();
+      // this.chaseTarget();
     }
+
     if (this.chaser) {
       this.chaseTarget();
     }
