@@ -4,12 +4,14 @@
 // T O   D O ' S
 
 // platform and ring 
-// accelaration after collision
+// accelaration after collision: force
+// player triangle
 
 // sausage skins
 // flag textures
 // phaser ui's
-// ai controls
+// blood 
+
 
 
 
@@ -19,6 +21,7 @@
 // sausage animations
 // sausage shadows
 // sausage hit animations
+// ai controls
 
 
 

@@ -6,6 +6,7 @@ Globals.ui;
 Globals.player;
 Globals.animManager;
 Globals.ai;
+Globals.isHit;
 Globals.isClicked;
 Globals.sausages;
 Globals.gameObjects = [];

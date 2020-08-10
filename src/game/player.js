@@ -48,6 +48,10 @@ export default class Player extends Sausage {
     this.animManager.update(delta);
 
     this.body.position.y = 2.1;
+    //if (!Globals.isHit) {
+    //this.body.velocity.x = 0;
+    //this.body.velocity.z = 0;
+    // }
     this.position.copy(this.body.position);
 
     this.controller.update(delta);
@@ -64,10 +68,7 @@ export default class Player extends Sausage {
         this.setState(Globals.states.IDLE);
         this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
       });
-    } /* else if (this.body.currentState === Globals.states.ATTACK && !this.controller.isClicked) {
-      this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
-      this.setState(Globals.states.IDLE);
-    } */
+    }
   }
 
   setState(state) {

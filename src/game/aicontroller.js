@@ -91,7 +91,7 @@ export default class AiController {
     //for (let i = 0; i < Globals.gameObjects.length; i++) {
     let others = [];
     others = Globals.gameObjects.filter((x) => x.uuid != this.id);
-    console.log(others);
+    //console.log(others);
     //this.target = Globals.gameObjects[0];
     this.target = others[Math.floor(Math.random() * others.length)];
     //}
@@ -109,7 +109,7 @@ export default class AiController {
 
     this.direction = this.forwardVector.clone().applyQuaternion(this.targetRotationQuaternion);
 
-    this.velocity = this.direction.clone().multiplyScalar(3);
+    this.velocity = this.direction.clone().multiplyScalar(4);
 
     this.ai.body.velocity.copy(this.velocity);
     this.ai.rotation.y = ang;
