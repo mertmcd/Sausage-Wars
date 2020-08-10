@@ -114,11 +114,13 @@ class Game {
 
           //if (distance > 0.5) {
           let angle = Math.atan2(e.target.position.x - e.body.position.x, e.target.position.z - e.body.position.z);
-          console.log("a: " + angle);
+          console.log(e);
           let vx = 2 * Math.sin(angle);
           let vz = 2 * Math.cos(angle);
-          e.body.velocity.x += -vx;
-          e.body.velocity.z += -vz;
+          //e.body.velocity.x += -vx;
+          //e.body.velocity.z += -vz;
+          e.target.velocity.x += vx;
+          e.target.velocity.z += vz;
           //console.log(vx);
           // }
           // e.body.velocity.x -= 5;
