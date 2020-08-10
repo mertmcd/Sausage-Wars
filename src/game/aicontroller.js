@@ -89,8 +89,11 @@ export default class AiController {
 
   detectTarget() {
     //for (let i = 0; i < Globals.gameObjects.length; i++) {
-    this.target = Globals.gameObjects[0];
-    //  this.target = Globals.gameObjects[Math.floor(Math.random() * Globals.gameObjects.length)];
+    let others = [];
+    others = Globals.gameObjects.filter((x) => x.uuid != this.id);
+    console.log(others);
+    //this.target = Globals.gameObjects[0];
+    this.target = others[Math.floor(Math.random() * others.length)];
     //}
   }
 

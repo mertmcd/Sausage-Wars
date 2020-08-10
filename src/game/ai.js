@@ -10,6 +10,7 @@ export default class Ai extends Sausage {
     this.timer = 0.5;
 
     this.controller = new AiController(this);
+    this.controller.id = this.uuid;
     this.isAi = true;
 
     this.body.currentState = Globals.states.IDLE;

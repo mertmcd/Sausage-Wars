@@ -56,7 +56,6 @@ export default class Player extends Sausage {
       if (this.controller.isClicked) {
         this.setState(Globals.states.MOVE);
         this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
-        console.log("medsdsrt");
       }
     } else if (this.body.currentState === Globals.states.MOVE && !this.controller.isClicked) {
       this.setState(Globals.states.ATTACK);
