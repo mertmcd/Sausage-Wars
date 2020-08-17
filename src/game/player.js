@@ -13,6 +13,8 @@ export default class Player extends Sausage {
     this.body.currentState = Globals.states.IDLE;
     this.initAnimation();
 
+    this.currentTarget = null;
+
     // Add triangle
 
     let geo = new THREE.Geometry();
@@ -46,30 +48,52 @@ export default class Player extends Sausage {
   }
 
   update(delta) {
-    this.animManager.update(delta);
-
     this.body.position.y = 2.1;
-    if (!Globals.isHit) {
-      // this.body.velocity.x = 0;
-      // this.body.velocity.z = 0;
-    }
 
+    // if (!Globals.isHit) {
+    //   this.body.velocity.x = 0;
+    //   this.body.velocity.z = 0;
+    // }
     this.controller.update(delta);
 
     if (this.body.currentState === Globals.states.IDLE) {
       if (this.controller.isClicked) {
         this.setState(Globals.states.MOVE);
-        this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
       }
     } else if (this.body.currentState === Globals.states.MOVE && !this.controller.isClicked) {
       this.setState(Globals.states.ATTACK);
       this.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
-
       this.animManager.curAnim.onComplete(() => {
         this.setState(Globals.states.IDLE);
         this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
       });
+    } /* else if (this.body.currentState === Globals.states.DIE) {
+        this.mesh.scale *= 1.5;
+        } */
+
+    if (this.body.currentState === Globals.states.MOVE) {
+      this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
+
+      for (let i = 0; i < Globals.sausages.length; i++) {
+        let enemy = Globals.sausages[i];
+        let dist = this.position.distanceTo(enemy.position);
+        if (dist < 1) {
+          let diff = new Vector3().subVectors(enemy.position, this.position);
+          let ang = Math.atan2(diff.x, diff.z);
+          this.rotation.y = ang;
+          this.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
+          enemy.animManager.fadeToAction("sarsilma", {duration: 0.1, loopType: LoopOnce});
+          this.setState(Globals.states.ATTACK);
+          break;
+        }
+      }
+    } else if (this.body.currentState === Globals.states.ATTACK) {
+      this.body.velocity.set(0, 0, 0);
+      if (this.animManager.getCurPerctange() >= 1) {
+        this.setState(Globals.states.IDLE);
+      }
     }
+    this.animManager.update(delta);
     this.position.copy(this.body.position);
   }
 

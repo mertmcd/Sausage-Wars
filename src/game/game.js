@@ -80,7 +80,7 @@ class Game {
 
     // Add sausages to the scene
 
-    let number = 7;
+    let number = 5;
     let radius = 7;
     Globals.sausages = [];
 
@@ -102,26 +102,35 @@ class Game {
     // Collision
 
     for (let enemy of Globals.gameObjects) {
-      enemy.body.addEventListener("collide", function (e) {
+      continue;
+      //Globals.isHit = false;
+      enemy.body.addEventListener("collide", (e) => {
         if (e.body.tag === "enemy") {
-          e.body.currentState = Globals.states.ATTACK;
-          e.body.animManager.fadeToAction("kafaatma", {duration: 0.2, loopType: LoopOnce});
-          e.target.animManager.fadeToAction("sarsilma", {duration: 0.2, loopType: LoopOnce});
+          let curBody = e.target;
+          let targetBody = e.body;
+
+          curBody.currentState = Globals.states.ATTACK;
+
+          //Globals.isHit = true;
 
           // let distance = Math.sqrt((e.target.position.x - e.body.position.x) * (e.target.position.x - e.body.position.x) + (e.target.position.z - e.body.position.z) * (e.target.position.z - e.body.position.z));
           // console.log("d: " + distance);
 
           //if (distance > 0.5) {
-          let angle = Math.atan2(e.target.position.x - e.body.position.x, e.target.position.z - e.body.position.z);
-          console.log("body: " + e.body);
-          console.log("target: " + e.target);
+          console.log(e);
+          curBody.master.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
+          //e.target.animManager.fadeToAction("sarsilma", {duration: 0.2, loopType: LoopOnce});
+          let angle = Math.atan2(targetBody.position.x - curBody.position.x, targetBody.position.z - curBody.position.z);
+          //console.log("body: " + e.body);
+          //console.log("target: " + e.target);
 
           let vx = 2 * Math.sin(angle);
           let vz = 2 * Math.cos(angle);
           //e.body.velocity.x += -vx;
           //e.body.velocity.z += -vz;
-          e.target.velocity.x += vx;
-          e.target.velocity.z += vz;
+          targetBody.velocity.set(0, 0, 0);
+          targetBody.velocity.x += vx * 5;
+          targetBody.velocity.z += vz * 5;
           //console.log(vx);
           // }
           // console.log(e);
@@ -131,6 +140,7 @@ class Game {
           // e.body.velocity.z -= 5;
         }
       });
+      //Globals.isHit = false;
     }
 
     if (fromRestart) {
@@ -190,14 +200,13 @@ class Game {
 
     let controls = app.controls;
 
-    cam.position.x = Globals.player.body.position.x; // 0
-    cam.position.z = Globals.player.body.position.z + 27; // 20
-
     for (let obj of Globals.gameObjects) {
       obj.update(delta);
     }
 
-    confettiMaker && confettiMaker.update();
+    cam.position.x = Globals.player.body.position.x; // 0
+    cam.position.z = Globals.player.body.position.z + 27; // 20
+    //confettiMaker && confettiMaker.update();
 
     main.CANNON && main.CANNON.cannonDebugRenderer && main.CANNON.cannonDebugRenderer.update();
     main.world && main.world.step(delta);

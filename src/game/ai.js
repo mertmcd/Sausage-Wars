@@ -17,10 +17,8 @@ export default class Ai extends Sausage {
     this.initAnimation();
   }
   update(delta) {
-    this.animManager.update(delta);
-
     this.body.position.y = 2.1;
-    this.position.copy(this.body.position);
+    this.animManager.update(delta);
 
     this.controller.update(delta);
 
@@ -30,10 +28,11 @@ export default class Ai extends Sausage {
       this.timer -= delta;
       if (this.timer <= 0) {
         this.timer = 0.5;
-        this.animManager.startAnimation("sarsilma", false);
+        //this.animManager.startAnimation("sarsilma", false);
         this.setState(Globals.states.IDLE);
       }
     }
+    this.position.copy(this.body.position);
   }
 
   setState(state) {

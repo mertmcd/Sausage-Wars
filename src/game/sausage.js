@@ -10,8 +10,6 @@ import AnimManager from "../utils/animManager";
 
 export default class Sausage extends Object3D {
   constructor(pos, rot) {
-    //  console.log("dem");
-
     super();
 
     this.controls = app.controls;
@@ -41,7 +39,6 @@ export default class Sausage extends Object3D {
     Globals.main.scene.add(this);
 
     Globals.gameObjects.push(this);
-    //console.log(Globals.gameObjects);
 
     let ssg3 = new Box3().setFromObject(this);
     let ssgSize = ssg3.getSize(new Vector3());
@@ -53,6 +50,7 @@ export default class Sausage extends Object3D {
     let shape = new Box(new Vec3(ssgSize.x / 5, ssgSize.y / 2.5, ssgSize.z / 5));
     this.body.addShape(shape);
     Globals.main.world.add(this.body);
+    this.body.master = this;
 
     this.position.copy(pos);
     this.rotation.copy(rot);
