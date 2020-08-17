@@ -16,8 +16,6 @@ var isTest = true;
 var data, confettiMaker;
 var updateFunction;
 let cam;
-let isEnd = false;
-// Globals.isHit = false;
 
 class Game {
   constructor(_main) {}
@@ -82,7 +80,7 @@ class Game {
 
     // Add sausages to the scene
 
-    let number = 5;
+    let number = 7;
     let radius = 7;
     Globals.sausages = [];
 
@@ -107,14 +105,17 @@ class Game {
       enemy.body.addEventListener("collide", function (e) {
         if (e.body.tag === "enemy") {
           e.body.currentState = Globals.states.ATTACK;
-          // Globals.isHit = true;
-          this.animManager.fadeToAction("kafaatma", {duration: 0.2, loopType: LoopOnce});
+          e.body.animManager.fadeToAction("kafaatma", {duration: 0.2, loopType: LoopOnce});
+          e.target.animManager.fadeToAction("sarsilma", {duration: 0.2, loopType: LoopOnce});
+
           // let distance = Math.sqrt((e.target.position.x - e.body.position.x) * (e.target.position.x - e.body.position.x) + (e.target.position.z - e.body.position.z) * (e.target.position.z - e.body.position.z));
-          //console.log("d: " + distance);
+          // console.log("d: " + distance);
 
           //if (distance > 0.5) {
           let angle = Math.atan2(e.target.position.x - e.body.position.x, e.target.position.z - e.body.position.z);
-          console.log(e);
+          console.log("body: " + e.body);
+          console.log("target: " + e.target);
+
           let vx = 2 * Math.sin(angle);
           let vz = 2 * Math.cos(angle);
           //e.body.velocity.x += -vx;
@@ -123,8 +124,6 @@ class Game {
           e.target.velocity.z += vz;
           //console.log(vx);
           // }
-          // e.body.velocity.x -= 5;
-
           // console.log(e);
           // e.body.applyForce(new Vec3(500, 0, 500), e.body.position);
           // e.target.applyForce(new Vec3(500, 0, 500), e.target.position);

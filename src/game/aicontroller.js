@@ -34,7 +34,7 @@ export default class AiController {
 
       if (this.timer >= this.decisionTime) {
         this.chaser = false;
-        if (Math.random() < 0.5) {
+        if (Math.random() < 0.3) {
           console.log("mert");
           this.detectTarget();
           this.chaser = true;
@@ -89,11 +89,11 @@ export default class AiController {
 
   detectTarget() {
     //for (let i = 0; i < Globals.gameObjects.length; i++) {
-    let others = [];
-    others = Globals.gameObjects.filter((x) => x.uuid != this.id);
+    this.others = [];
+    this.others = Globals.gameObjects.filter((x) => x.uuid != this.id);
     //console.log(others);
     //this.target = Globals.gameObjects[0];
-    this.target = others[Math.floor(Math.random() * others.length)];
+    this.target = this.others[Math.floor(Math.random() * this.others.length)];
     //}
   }
 

@@ -16,9 +16,10 @@ export default class Player extends Sausage {
     // Add triangle
 
     let geo = new THREE.Geometry();
-    var v1 = new THREE.Vector3(-0.5, 0, 1); // 010
-    var v2 = new THREE.Vector3(0.5, 0, 1); // 011
-    var v3 = new THREE.Vector3(0, 0, 2); // 0005
+
+    let v1 = new THREE.Vector3(-0.5, 0, 1);
+    let v2 = new THREE.Vector3(0.5, 0, 1);
+    let v3 = new THREE.Vector3(0, 0, 2);
 
     geo.vertices.push(v1);
     geo.vertices.push(v2);
@@ -48,11 +49,10 @@ export default class Player extends Sausage {
     this.animManager.update(delta);
 
     this.body.position.y = 2.1;
-    //if (!Globals.isHit) {
-    //this.body.velocity.x = 0;
-    //this.body.velocity.z = 0;
-    // }
-    this.position.copy(this.body.position);
+    if (!Globals.isHit) {
+      // this.body.velocity.x = 0;
+      // this.body.velocity.z = 0;
+    }
 
     this.controller.update(delta);
 
@@ -64,11 +64,13 @@ export default class Player extends Sausage {
     } else if (this.body.currentState === Globals.states.MOVE && !this.controller.isClicked) {
       this.setState(Globals.states.ATTACK);
       this.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
+
       this.animManager.curAnim.onComplete(() => {
         this.setState(Globals.states.IDLE);
         this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
       });
     }
+    this.position.copy(this.body.position);
   }
 
   setState(state) {

@@ -1,6 +1,6 @@
 import Sausage from "./sausage";
 import AiController from "./aicontroller";
-import {LoopRepeat} from "three";
+import {LoopRepeat, LoopOnce} from "three";
 import Globals from "./globals";
 
 export default class Ai extends Sausage {
