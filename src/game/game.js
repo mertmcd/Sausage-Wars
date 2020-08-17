@@ -101,47 +101,47 @@ class Game {
 
     // Collision
 
-    for (let enemy of Globals.gameObjects) {
-      continue;
-      //Globals.isHit = false;
-      enemy.body.addEventListener("collide", (e) => {
-        if (e.body.tag === "enemy") {
-          let curBody = e.target;
-          let targetBody = e.body;
+    // for (let enemy of Globals.gameObjects) {
+    //   continue;
+    //   //Globals.isHit = false;
+    //   enemy.body.addEventListener("collide", (e) => {
+    //     if (e.body.tag === "enemy") {
+    //       let curBody = e.target;
+    //       let targetBody = e.body;
 
-          curBody.currentState = Globals.states.ATTACK;
+    //       curBody.currentState = Globals.states.ATTACK;
 
-          //Globals.isHit = true;
+    //       //Globals.isHit = true;
 
-          // let distance = Math.sqrt((e.target.position.x - e.body.position.x) * (e.target.position.x - e.body.position.x) + (e.target.position.z - e.body.position.z) * (e.target.position.z - e.body.position.z));
-          // console.log("d: " + distance);
+    //       // let distance = Math.sqrt((e.target.position.x - e.body.position.x) * (e.target.position.x - e.body.position.x) + (e.target.position.z - e.body.position.z) * (e.target.position.z - e.body.position.z));
+    //       // console.log("d: " + distance);
 
-          //if (distance > 0.5) {
-          console.log(e);
-          curBody.master.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
-          //e.target.animManager.fadeToAction("sarsilma", {duration: 0.2, loopType: LoopOnce});
-          let angle = Math.atan2(targetBody.position.x - curBody.position.x, targetBody.position.z - curBody.position.z);
-          //console.log("body: " + e.body);
-          //console.log("target: " + e.target);
+    //       //if (distance > 0.5) {
+    //       console.log(e);
+    //       curBody.master.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
+    //       //e.target.animManager.fadeToAction("sarsilma", {duration: 0.2, loopType: LoopOnce});
+    //       let angle = Math.atan2(targetBody.position.x - curBody.position.x, targetBody.position.z - curBody.position.z);
+    //       //console.log("body: " + e.body);
+    //       //console.log("target: " + e.target);
 
-          let vx = 2 * Math.sin(angle);
-          let vz = 2 * Math.cos(angle);
-          //e.body.velocity.x += -vx;
-          //e.body.velocity.z += -vz;
-          targetBody.velocity.set(0, 0, 0);
-          targetBody.velocity.x += vx * 5;
-          targetBody.velocity.z += vz * 5;
-          //console.log(vx);
-          // }
-          // console.log(e);
-          // e.body.applyForce(new Vec3(500, 0, 500), e.body.position);
-          // e.target.applyForce(new Vec3(500, 0, 500), e.target.position);
+    //       let vx = 2 * Math.sin(angle);
+    //       let vz = 2 * Math.cos(angle);
+    //       //e.body.velocity.x += -vx;
+    //       //e.body.velocity.z += -vz;
+    //       targetBody.velocity.set(0, 0, 0);
+    //       targetBody.velocity.x += vx * 5;
+    //       targetBody.velocity.z += vz * 5;
+    //       //console.log(vx);
+    //       // }
+    //       // console.log(e);
+    //       // e.body.applyForce(new Vec3(500, 0, 500), e.body.position);
+    //       // e.target.applyForce(new Vec3(500, 0, 500), e.target.position);
 
-          // e.body.velocity.z -= 5;
-        }
-      });
-      //Globals.isHit = false;
-    }
+    //       // e.body.velocity.z -= 5;
+    //     }
+    //   });
+    //   //Globals.isHit = false;
+    // }
 
     if (fromRestart) {
       return;

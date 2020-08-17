@@ -67,18 +67,16 @@ export default class Player extends Sausage {
         this.setState(Globals.states.IDLE);
         this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
       });
-    } /* else if (this.body.currentState === Globals.states.DIE) {
-        this.mesh.scale *= 1.5;
-        } */
+    }
 
     if (this.body.currentState === Globals.states.MOVE) {
       this.animManager.fadeToAction("kosma", {duration: 0.2, loopType: LoopRepeat});
 
       for (let i = 0; i < Globals.sausages.length; i++) {
         let enemy = Globals.sausages[i];
-        let dist = this.position.distanceTo(enemy.position);
+        let dist = this.body.position.distanceTo(enemy.body.position);
         if (dist < 1) {
-          let diff = new Vector3().subVectors(enemy.position, this.position);
+          let diff = new Vector3().subVectors(enemy.body.position, this.body.position);
           let ang = Math.atan2(diff.x, diff.z);
           this.rotation.y = ang;
           this.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
