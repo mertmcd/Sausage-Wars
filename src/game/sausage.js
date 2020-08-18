@@ -38,7 +38,7 @@ export default class Sausage extends Object3D {
     this.mesh.position.y = -1.05;
     Globals.main.scene.add(this);
 
-    Globals.gameObjects.push(this);
+    Globals.gameObjects.push(this); //globals
 
     let ssg3 = new Box3().setFromObject(this);
     let ssgSize = ssg3.getSize(new Vector3());

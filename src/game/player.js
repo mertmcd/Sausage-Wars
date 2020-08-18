@@ -45,6 +45,7 @@ export default class Player extends Sausage {
 
     //triangle.rotation.z = Math.PI / 2;
     this.add(triangle);
+    console.log(this);
   }
 
   update(delta) {

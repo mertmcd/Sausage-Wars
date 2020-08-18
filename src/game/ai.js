@@ -47,13 +47,11 @@ export default class Ai extends Sausage {
           this.animManager.curAnim.onComplete(() => {
             this.setState(Globals.states.IDLE);
             this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
-            this.timer = 0;
           });
           enemy.animManager.fadeToAction("sarsilma", {duration: 0.1, loopType: LoopOnce});
           enemy.animManager.curAnim.onComplete(() => {
             enemy.setState(Globals.states.IDLE);
             enemy.animManager.fadeToAction("idle", {loopType: LoopRepeat});
-            this.timer = 0;
           });
           //this.body.velocity.set(0, 0, 0);
           this.setState(Globals.states.ATTACK);
