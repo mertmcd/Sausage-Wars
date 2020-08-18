@@ -47,7 +47,7 @@ export default class Sausage extends Object3D {
       mass: 10,
     });
 
-    let shape = new Box(new Vec3(ssgSize.x / 5, ssgSize.y / 2.5, ssgSize.z / 5));
+    let shape = new Box(new Vec3(ssgSize.x / 2, ssgSize.y / 2.5, ssgSize.z / 2));
     this.body.addShape(shape);
     Globals.main.world.add(this.body);
     this.body.master = this;
