@@ -35,13 +35,13 @@ export default class AiController {
       if (this.timer >= this.decisionTime) {
         this.chaser = false;
         if (Math.random() < 0.3) {
-          console.log("mert");
+          // console.log("mert");
           this.detectTarget();
           this.chaser = true;
         } else {
           this.moveAi();
           // this.detectTarget();
-          console.log("can");
+          // console.log("can");
         }
         this.timer = 0;
       }
