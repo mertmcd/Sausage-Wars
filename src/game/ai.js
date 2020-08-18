@@ -35,20 +35,20 @@ export default class Ai extends Sausage {
         if (dist < 1 && dist != 0) {
           let diff = new Vector3().subVectors(enemy.body.position, this.body.position);
           let ang = Math.atan2(diff.x, diff.z);
-          this.rotation.y = ang;
+          // this.rotation.y = ang;
 
           let vx = 5 * Math.sin(ang);
           let vz = 5 * Math.cos(ang);
-          this.body.velocity.x += vx;
-          this.body.velocity.z += vz;
+          enemy.body.velocity.x += vx;
+          enemy.body.velocity.z += vz;
 
           this.animManager.fadeToAction("kafaatma", {duration: 0.1, loopType: LoopOnce});
-          // this.animManager.curAnim.onComplete(() => {
-          //   this.setState(Globals.states.IDLE);
-          //   this.animManager.fadeToAction("idle", {loopType: LoopRepeat});
-          // });
           enemy.animManager.fadeToAction("sarsilma", {duration: 0.1, loopType: LoopOnce});
-          enemy.body.velocity.set(0, 0, 0);
+          enemy.animManager.curAnim.onComplete(() => {
+            enemy.setState(Globals.states.IDLE);
+            enemy.animManager.fadeToAction("idle", {loopType: LoopRepeat});
+          });
+          //enemy.body.velocity.set(0, 0, 0);
           this.setState(Globals.states.ATTACK);
           break;
         }
